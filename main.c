@@ -101,7 +101,7 @@ int main(int argc, char* argv[]) {
 }
 	fprintf(stderr, "Waiting for audio...!\n");
 	fflush(stderr);
-	SDL_Delay(1000);  // wait for some audio to accumulate in stream before playing
+	SDL_Delay(250);  // wait for some audio to accumulate in stream before playing
 
 	SDL_PauseAudio(0);  // start
 
