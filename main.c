@@ -22,6 +22,14 @@ void audio_callback(void* userdata, Uint8* stream, int len) {
             marker_position = ftell(file);
             buffer_length = fread(buffer, 1, BUFFER_SIZE, file);
             if (buffer_length == 0) {
+                if (feof(file)) {
+                    fprintf(stderr, "EOF reached.\n");
+					fflush(stderr);
+                }
+                if (ferror(file)) {
+                    fprintf(stderr, "Error reading from file.\n");
+					fflush(stderr);
+                }
                 clearerr(file); 
                 fseek(file, marker_position, SEEK_SET);
                 SDL_Delay(500); 
@@ -47,7 +55,7 @@ int main(int argc, char* argv[]) {
     int c;
 
     // Redirect stdout and stderr to /dev/null
-    stdout = freopen("/mnt/SDCARD/App/ncspot/logs/log.txt", "w", stdout);
+    stdout = freopen("/tmp/audiobridgelog.log", "w", stdout);
 	stderr = fdopen(dup(fileno(stdout)), "w");
 
     while ((c = getopt(argc, argv, "c:r:")) != -1) {
